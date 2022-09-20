@@ -1,0 +1,61 @@
+import { useState } from 'react';
+import './App.css';
+
+const useInput = () => {
+
+  const [value, setInputValue] = useState('')
+  const [todoArr, setTodoArr] = useState(['task1', 'task2', 'task3'])
+
+  return {
+    value,
+    todoArr,
+    onChange: e => setInputValue(e.target.value),
+    addTodo: value => {
+      if (value !== '') {
+      setTodoArr([...todoArr, value])
+      setInputValue('')
+      console.log(todoArr)
+      }
+    }
+  }
+}
+
+const TodoForm = () => {
+
+  const { value, addTodo, onChange } = useInput()
+
+  return (
+    <div>
+      <form>
+        <input value={value} type='text' onChange={onChange} />
+        <input type='button' value='Add' onClick={() => addTodo(value)} />
+      </form>
+    </div>
+  )
+}
+
+
+const TodoList = () => {
+
+  const { todoArr } = useInput()
+
+  let todoItem = todoArr.map(item => <div key={item}>{item}</div>)
+
+  return (
+    <div>
+      {todoItem}
+    </div>
+  )
+}
+
+const App = () => {
+
+  return (
+    <div className="App-header">
+      <TodoForm />
+      <TodoList />
+    </div>
+  );
+}
+
+export default App;
